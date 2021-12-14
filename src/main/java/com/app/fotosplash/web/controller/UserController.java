@@ -20,14 +20,13 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/")
-@CrossOrigin(maxAge = 3600)
+@Slf4j
 public class UserController {
 
     @Autowired
     UserService userService;
 
     @GetMapping("/login")
-    @CrossOrigin("http://localhost:3000")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> loginUser(Principal user){
         userService.loginUser(user);
