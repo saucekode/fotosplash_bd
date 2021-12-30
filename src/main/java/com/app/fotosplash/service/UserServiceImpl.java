@@ -6,10 +6,9 @@ import com.app.fotosplash.data.repository.PhotoRepository;
 import com.app.fotosplash.data.repository.UserRepository;
 import com.app.fotosplash.web.exceptions.FotoSplashExceptions;
 import com.app.fotosplash.web.exceptions.UserNotFoundException;
-import com.app.fotosplash.web.payload.PhotoDTO;
+import com.app.fotosplash.web.payload.PhotoRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -99,7 +98,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User addPhoto(String userAddingPhoto, PhotoDTO photoDTO) throws UserNotFoundException {
+    public User addPhoto(String userAddingPhoto, PhotoRequest photoRequest) throws UserNotFoundException {
         // need for refactor
         Optional<User> existingUser = userRepository.findById(userAddingPhoto);
 //        log.info(existingUser.get().getFirstName());
@@ -107,14 +106,14 @@ public class UserServiceImpl implements UserService{
             throw new UserNotFoundException("User does not exist");
         }
 //        log.info(existingUser.get().getUserPhoto());
-        existingUser.get().addUserPhoto(mapPhotoModelToDto(photoDTO));
+        existingUser.get().addUserPhoto(mapPhotoModelToDto(photoRequest));
         return saveUserToDatabase(existingUser.get());
     }
 
-    private Photo mapPhotoModelToDto(PhotoDTO photoDTO){
+    private Photo mapPhotoModelToDto(PhotoRequest photoRequest){
         Photo newPhoto = new Photo();
-        newPhoto.setPhotoLabel(photoDTO.getPhotoLabel());
-        newPhoto.setImage(photoDTO.getImage());
+        newPhoto.setPhotoLabel(photoRequest.getPhotoLabel());
+        newPhoto.setImage(photoRequest.getImage());
         return photoRepository.save(newPhoto);
     }
 

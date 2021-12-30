@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class PhotoDTO {
+public class PhotoRequest {
     @NonNull
     private String photoLabel;
     @NonNull

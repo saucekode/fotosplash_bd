@@ -1,11 +1,10 @@
 package com.app.fotosplash.web.controller;
 
-import com.app.fotosplash.data.model.Photo;
 import com.app.fotosplash.data.model.User;
 import com.app.fotosplash.service.UserService;
 import com.app.fotosplash.web.exceptions.FotoSplashExceptions;
 import com.app.fotosplash.web.exceptions.UserNotFoundException;
-import com.app.fotosplash.web.payload.PhotoDTO;
+import com.app.fotosplash.web.payload.PhotoRequest;
 import com.app.fotosplash.web.payload.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/")
 @Slf4j
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
 
     @Autowired
@@ -46,9 +44,9 @@ public class UserController {
 
     @PostMapping("/addphoto/{userAddingPhoto}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> addPhoto(@RequestParam("userAddingPhoto") String userAddingPhoto, @RequestBody PhotoDTO photoDTO){
+    public ResponseEntity<?> addPhoto(@RequestParam("userAddingPhoto") String userAddingPhoto, @RequestBody PhotoRequest photoRequest){
         try {
-            userService.addPhoto(userAddingPhoto, photoDTO);
+            userService.addPhoto(userAddingPhoto, photoRequest);
         } catch (UserNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist", ex);
         }

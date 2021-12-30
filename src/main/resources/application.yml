@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: dev
+
+server:
+  error:
+    include-message: always
+  port: 8181
