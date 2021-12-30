@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService{
         // need for serious refactoring
         Map userInfoRetrieved = retrieveUserProfileFromClient(userAuth);
 
-        Optional<User> existingEmail = Optional.ofNullable(userRepository.findUserByEmail(String.valueOf(userInfoRetrieved.get("email"))));
+        Optional<User> existingEmail = userRepository.findUserByEmail(String.valueOf(userInfoRetrieved.get("email")));
 
         user.setFirstName(String.valueOf(userInfoRetrieved.get("given_name")));
         user.setLastName(String.valueOf(userInfoRetrieved.get("family_name")));
