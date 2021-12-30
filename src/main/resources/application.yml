@@ -6,3 +6,12 @@ server:
   error:
     include-message: always
   port: 8181
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
