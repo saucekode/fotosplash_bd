@@ -1,7 +1,6 @@
 spring:
   data:
     mongodb:
-      auto-index-creation: true
       uri: mongodb+srv://saucekode:softbadass832@fotosplash.715ur.mongodb.net/test
 
   security:
@@ -25,3 +24,4 @@ app:
   oauth2:
     authorizedRedirectUris:
       - http://localhost:3000/oauth2/redirect
+      - https://objective-dubinsky-cb9c46.netlify.app/oauth2/redirect

@@ -4,10 +4,11 @@ services:
     image: mongo:latest
 
     environment:
-      MONGO_URL: mongodb+srv://saucekode:softbadass832@fotosplash.715ur.mongodb.net/test
+      MONGO_INITDB_ROOT_USERNAME: saucekode
+      MONGO_INITDB_ROOT_PASSWORD: softbadass832
 
     ports:
-      - 27017:27017
+      - "27017:27017"
     volumes:
       - mongodb_data_container:/data/db
 

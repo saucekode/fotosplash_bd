@@ -73,6 +73,7 @@ public class UserServiceImpl implements UserService{
             ResponseEntity<Map> response = restTemplate.exchange(userInfo, HttpMethod.GET, entity, Map.class);
 
             userDetails = response.getBody();
+
         }
 
         return userDetails;
@@ -89,6 +90,7 @@ public class UserServiceImpl implements UserService{
         user.setLastName(String.valueOf(userInfoRetrieved.get("family_name")));
         user.setUserPhoto(String.valueOf(userInfoRetrieved.get("picture")));
         user.setEmail(String.valueOf(userInfoRetrieved.get("email")));
+        user.setAuthToken("Bearer " + getUserDetailsFromClient(userAuth).getAccessToken());
 
         if(!existingEmail.isPresent()){
             return saveUserToDatabase(user);

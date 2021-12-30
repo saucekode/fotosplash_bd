@@ -1,8 +1,20 @@
-#
-#spring.security.oauth2.client.registration.google.client-id=${CLIENT_ID}
-#spring.security.oauth2.client.registration.google.client-secret=${CLIENT_SECRET}
-#
-#app.cors.allowedOrigins=${ALLOWED_ORIGINS}
-#
-#spring.data.mongodb.uri=${MONGO_URI}
-#
+spring:
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: ${CLIENT_ID}
+            clientSecret: ${CLIENT_SECRET}
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+
+app:
+  cors:
+    allowedOrigins: ${ALLOWED_ORIGINS}
