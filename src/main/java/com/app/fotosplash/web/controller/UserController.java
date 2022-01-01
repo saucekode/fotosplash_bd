@@ -29,6 +29,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> loginUser(Principal user){
         userService.loginUser(user);
+        log.info("user authenticated");
         return ResponseEntity.ok(new Response(true, "User authenticated successfully!"));
     }
 
