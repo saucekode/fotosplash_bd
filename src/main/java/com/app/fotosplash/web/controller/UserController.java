@@ -25,19 +25,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> loginUser(Principal user){
-        userService.loginUser(user);
-        log.info("user authenticated");
-        return ResponseEntity.ok(new Response(true, "User authenticated successfully!"));
-    }
 
     @GetMapping("/userinfo")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> viewUserProfile(User user, OAuth2AuthenticationToken userToken){
+    public ResponseEntity<?> viewUserProfile(User user){
         try {
-            return ResponseEntity.ok(userService.saveUserprofile(user, userToken));
+            return ResponseEntity.ok(userService.saveUserprofile(user));
         } catch (FotoSplashExceptions e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User already exists!", e);
         }

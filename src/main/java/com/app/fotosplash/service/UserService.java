@@ -10,9 +10,8 @@ import java.security.Principal;
 import java.util.Map;
 
 public interface UserService {
-    Principal loginUser(Principal user);
 
-    User saveUserprofile(User user, OAuth2AuthenticationToken userAuth) throws FotoSplashExceptions;
+    User saveUserprofile(User user) throws FotoSplashExceptions;
 
     User addPhoto(String userAddingPhoto, PhotoRequest photoRequest) throws UserNotFoundException;
 

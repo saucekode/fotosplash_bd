@@ -43,12 +43,8 @@ public class UserServiceImpl implements UserService{
     RestTemplate restTemplate;
 
 
-    @Override
-    public Principal loginUser(Principal principal) {
-        return principal;
-    }
-
-    private OAuth2AuthorizedClient getUserDetailsFromClient(OAuth2AuthenticationToken authentication){
+    private OAuth2AuthorizedClient getUserDetailsFromClient(){
+        OAuth2AuthenticationToken authentication = null;
         OAuth2AuthorizedClient client = authorizedClientService
                 .loadAuthorizedClient(
                         authentication.getAuthorizedClientRegistrationId(),
@@ -56,14 +52,14 @@ public class UserServiceImpl implements UserService{
         return client;
     }
 
-    private Map retrieveUserProfileFromClient(OAuth2AuthenticationToken userAuth){
+    private Map retrieveUserProfileFromClient(){
 
         Map userDetails = null;
 
-        String userInfo = getUserDetailsFromClient(userAuth)
+        String userInfo = getUserDetailsFromClient()
                             .getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri();
 
-        OAuth2AuthorizedClient client = getUserDetailsFromClient(userAuth);
+        OAuth2AuthorizedClient client = getUserDetailsFromClient();
 
         if(StringUtils.hasText(userInfo)){
             HttpHeaders headers = new HttpHeaders();
@@ -80,9 +76,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User saveUserprofile(User user, OAuth2AuthenticationToken userAuth) throws FotoSplashExceptions {
+    public User saveUserprofile(User user) throws FotoSplashExceptions {
         // need for serious refactoring
-        Map userInfoRetrieved = retrieveUserProfileFromClient(userAuth);
+        Map userInfoRetrieved = retrieveUserProfileFromClient();
 
         Optional<User> existingEmail = userRepository.findUserByEmail(String.valueOf(userInfoRetrieved.get("email")));
 
@@ -90,7 +86,7 @@ public class UserServiceImpl implements UserService{
         user.setLastName(String.valueOf(userInfoRetrieved.get("family_name")));
         user.setUserPhoto(String.valueOf(userInfoRetrieved.get("picture")));
         user.setEmail(String.valueOf(userInfoRetrieved.get("email")));
-        user.setAuthToken("Bearer " + getUserDetailsFromClient(userAuth).getAccessToken().getTokenValue());
+        user.setAuthToken("Bearer " + getUserDetailsFromClient().getAccessToken().getTokenValue());
 
         if(!existingEmail.isPresent()){
             return saveUserToDatabase(user);
