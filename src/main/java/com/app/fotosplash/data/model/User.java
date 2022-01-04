@@ -16,7 +16,6 @@ public class User {
     private String lastName;
     private String email;
     private String userPhoto;
-    private String authToken;
     private List<Photo> userPhotos;
 
     public void addUserPhoto(Photo photo){

@@ -18,3 +18,7 @@ spring:
 app:
   cors:
     allowedOrigins: ${ALLOWED_ORIGINS}
+
+  auth:
+    jwtSecret: ${JWTSECRET}
+    jwtExpirationInMSecs: ${JWTEXPTIME}

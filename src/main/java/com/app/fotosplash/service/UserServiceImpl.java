@@ -76,7 +76,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User saveUserprofile(User user) throws FotoSplashExceptions {
+    public User saveUserprofile() throws FotoSplashExceptions {
+        User user = new User();
         // need for serious refactoring
         Map userInfoRetrieved = retrieveUserProfileFromClient();
 
@@ -86,7 +87,6 @@ public class UserServiceImpl implements UserService{
         user.setLastName(String.valueOf(userInfoRetrieved.get("family_name")));
         user.setUserPhoto(String.valueOf(userInfoRetrieved.get("picture")));
         user.setEmail(String.valueOf(userInfoRetrieved.get("email")));
-        user.setAuthToken("Bearer " + getUserDetailsFromClient().getAccessToken().getTokenValue());
 
         if(!existingEmail.isPresent()){
             return saveUserToDatabase(user);

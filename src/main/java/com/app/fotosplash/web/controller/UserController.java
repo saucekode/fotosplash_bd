@@ -28,9 +28,9 @@ public class UserController {
 
     @GetMapping("/userinfo")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> viewUserProfile(User user){
+    public ResponseEntity<?> viewUserProfile(){
         try {
-            return ResponseEntity.ok(userService.saveUserprofile(user));
+            return ResponseEntity.ok(userService.saveUserprofile());
         } catch (FotoSplashExceptions e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User already exists!", e);
         }

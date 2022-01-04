@@ -1,4 +1,4 @@
-package com.app.fotosplash.security;
+package com.app.fotosplash.security.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

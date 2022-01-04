@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface UserService {
 
-    User saveUserprofile(User user) throws FotoSplashExceptions;
+    User saveUserprofile() throws FotoSplashExceptions;
 
     User addPhoto(String userAddingPhoto, PhotoRequest photoRequest) throws UserNotFoundException;
 
