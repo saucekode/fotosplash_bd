@@ -22,3 +22,6 @@ app:
   auth:
     jwtSecret: ${JWTSECRET}
     jwtExpirationInMSecs: ${JWTEXPTIME}
+
+  oauth2:
+    authorizedRedirectUris: ${ALLOWED_REDIRECTS}
