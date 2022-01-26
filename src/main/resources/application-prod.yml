@@ -20,8 +20,8 @@ app:
     allowedOrigins: ${ALLOWED_ORIGINS}
 
   auth:
-    jwtSecret: ${JWTSECRET}
-    jwtExpirationInMSecs: ${JWTEXPTIME}
+    tokenSecret: ${JWTSECRET}
+    tokenExpirationMsec: ${JWTEXPTIME}
 
   oauth2:
     authorizedRedirectUris: ${ALLOWED_REDIRECTS}

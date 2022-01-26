@@ -17,11 +17,11 @@ spring:
 
 app:
   auth:
-    jwtSecret: 04ca023b39512e46d0c2cf4b48d5aac61d33b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1
-    jwtExpirationInMsec: 864000000
+    tokenSecret: 04ca023b39512e46d0c2cf4b48d5aac61d33b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1
+    tokenExpirationMsec: 864000000
   cors:
     allowedOrigins: http://localhost:3000
   oauth2:
     authorizedRedirectUris:
       - http://localhost:3000/oauth2/redirect
-      - https://objective-dubinsky-cb9c46.netlify.app/oauth2/redirect
+#      - https://objective-dubinsky-cb9c46.netlify.app/oauth2/redirect

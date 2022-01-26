@@ -1,9 +1,9 @@
 package com.app.fotosplash.security.config;
 
-import com.app.fotosplash.security.oauth2.HttpCookieOAuthRequestRepository;
-import com.app.fotosplash.security.oauth2.OAuthFailureHandler;
-import com.app.fotosplash.security.oauth2.OAuthSuccessHandler;
-import com.app.fotosplash.service.user.UserService;
+import com.app.fotosplash.security.oauth2.CustomOAuth2UserService;
+import com.app.fotosplash.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.app.fotosplash.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.app.fotosplash.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;;
@@ -12,9 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Configuration
 @EnableWebSecurity
@@ -26,20 +23,20 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserService customOAuthUserService;
+    private CustomOAuth2UserService customOAuthUserService;
 
     @Autowired
-    private OAuthSuccessHandler oAuthSuccessHandler;
+    private OAuth2AuthenticationSuccessHandler oAuthSuccessHandler;
 
     @Autowired
-    private OAuthFailureHandler oAuthFailureHandler;
+    private OAuth2AuthenticationFailureHandler oAuthFailureHandler;
 
     @Autowired
-    private HttpCookieOAuthRequestRepository httpCookieOAuthRequestRepository;
+    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuthRequestRepository;
 
     @Bean
-    public HttpCookieOAuthRequestRepository cookieAuthorizationRequestRepository() {
-        return new HttpCookieOAuthRequestRepository();
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
 
     @Override
@@ -83,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .baseUri("/oauth2/callback/*")
                 .and()
                 .userInfoEndpoint()
-                .userService((OAuth2UserService<OAuth2UserRequest, OAuth2User>) customOAuthUserService)
+                .userService(customOAuthUserService)
                 .and()
                 .successHandler(oAuthSuccessHandler)
                 .failureHandler(oAuthFailureHandler);

@@ -3,12 +3,13 @@ package com.app.fotosplash.security.oauth2;
 import com.app.fotosplash.security.config.AppProperties;
 import com.app.fotosplash.security.config.TokenProvider;
 import com.app.fotosplash.utils.CookieUtils;
-import com.app.fotosplash.web.exceptions.FotoSplashExceptions;
+import com.app.fotosplash.web.exceptions.BadRequestException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -17,22 +18,29 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Optional;
 
-import static com.app.fotosplash.security.oauth2.HttpCookieOAuthRequestRepository.REDIRECT_URI_COOKIE;
+import static com.app.fotosplash.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
-public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private TokenProvider tokenProvider;
-    private AppProperties appProperties;
-    private HttpCookieOAuthRequestRepository httpCookieOAuthRequestRepository;
+@Slf4j
+public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    public OAuthSuccessHandler(TokenProvider tokenProvider, AppProperties appProperties, HttpCookieOAuthRequestRepository httpCookieOAuthRequestRepository) {
+    private TokenProvider tokenProvider;
+
+    private AppProperties appProperties;
+
+    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+
+
+    @Autowired
+    OAuth2AuthenticationSuccessHandler(TokenProvider tokenProvider, AppProperties appProperties,
+                                       HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
         this.tokenProvider = tokenProvider;
         this.appProperties = appProperties;
-        this.httpCookieOAuthRequestRepository = httpCookieOAuthRequestRepository;
+        this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
     }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException, IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         if (response.isCommitted()) {
@@ -45,15 +53,11 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     }
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_COOKIE)
+        Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
 
         if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
-            try {
-                throw new FotoSplashExceptions("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
-            } catch (FotoSplashExceptions e) {
-                e.printStackTrace();
-            }
+            throw new BadRequestException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
         }
 
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
@@ -67,13 +71,13 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
         super.clearAuthenticationAttributes(request);
-        httpCookieOAuthRequestRepository.removeAuthorizationRequestCookies(request, response);
+        httpCookieOAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
     }
 
     private boolean isAuthorizedRedirectUri(String uri) {
         URI clientRedirectUri = URI.create(uri);
-
-        return appProperties.getOAuth().getAuthorizedRedirectUris()
+//        log.info("print redirect uris --> {}", appProperties.getOauth2().getAuthorizedRedirectUris());
+        return appProperties.getOauth2().getAuthorizedRedirectUris()
                 .stream()
                 .anyMatch(authorizedRedirectUri -> {
                     // Only validate host and port. Let the clients use different paths if they want to
@@ -85,5 +89,4 @@ public class OAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                     return false;
                 });
     }
-
 }

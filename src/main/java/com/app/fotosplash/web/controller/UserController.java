@@ -1,7 +1,6 @@
 package com.app.fotosplash.web.controller;
 
 import com.app.fotosplash.service.photo.PhotoService;
-import com.app.fotosplash.service.user.UserService;
 import com.app.fotosplash.web.exceptions.FotoSplashExceptions;
 import com.app.fotosplash.web.exceptions.UserNotFoundException;
 import com.app.fotosplash.web.payload.PhotoRequest;
@@ -20,21 +19,18 @@ import java.util.Map;
 public class UserController {
 
     @Autowired
-    UserService userService;
-
-    @Autowired
     PhotoService photoService;
 
 
-    @GetMapping("/userinfo")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> viewUserProfile(){
-        try {
-            return ResponseEntity.ok(userService.saveUserprofile());
-        } catch (FotoSplashExceptions e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User already exists!", e);
-        }
-    }
+//    @GetMapping("/userinfo")
+//    @ResponseStatus(HttpStatus.OK)
+//    public ResponseEntity<?> viewUserProfile(){
+//        try {
+//            return ResponseEntity.ok(userService.saveUserprofile());
+//        } catch (FotoSplashExceptions e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User already exists!", e);
+//        }
+//    }
 
     @PostMapping("/addphoto/{userAddingPhoto}")
     @ResponseStatus(HttpStatus.CREATED)
