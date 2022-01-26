@@ -1,5 +1,6 @@
 package com.app.fotosplash.data.repository;
 
+import com.app.fotosplash.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
