@@ -3,7 +3,7 @@ package com.app.fotosplash.security.config;
 import com.app.fotosplash.security.oauth2.HttpCookieOAuthRequestRepository;
 import com.app.fotosplash.security.oauth2.OAuthFailureHandler;
 import com.app.fotosplash.security.oauth2.OAuthSuccessHandler;
-import com.app.fotosplash.service.UserService;
+import com.app.fotosplash.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;;

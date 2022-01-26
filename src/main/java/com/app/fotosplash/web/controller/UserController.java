@@ -1,20 +1,17 @@
 package com.app.fotosplash.web.controller;
 
-import com.app.fotosplash.data.model.User;
-import com.app.fotosplash.service.UserService;
+import com.app.fotosplash.service.photo.PhotoService;
+import com.app.fotosplash.service.user.UserService;
 import com.app.fotosplash.web.exceptions.FotoSplashExceptions;
 import com.app.fotosplash.web.exceptions.UserNotFoundException;
 import com.app.fotosplash.web.payload.PhotoRequest;
-import com.app.fotosplash.web.payload.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.security.Principal;
 import java.util.Map;
 
 @RestController
@@ -24,6 +21,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    PhotoService photoService;
 
 
     @GetMapping("/userinfo")
@@ -40,7 +40,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> addPhoto(@RequestParam("userAddingPhoto") String userAddingPhoto, @RequestBody PhotoRequest photoRequest){
         try {
-            userService.addPhoto(userAddingPhoto, photoRequest);
+            photoService.addPhoto(userAddingPhoto, photoRequest);
         } catch (UserNotFoundException ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist", ex);
         }
@@ -56,7 +56,7 @@ public class UserController {
             @RequestParam(defaultValue = "7") int size){
 
         try{
-            return ResponseEntity.ok(userService.viewAllPhotos(label, page, size));
+            return ResponseEntity.ok(photoService.viewAllPhotos(label, page, size));
         }catch(Exception ex){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -70,7 +70,7 @@ public class UserController {
             ){
 
             try {
-                userService.deletePhoto(userDeletingPhoto, photoToBeDeleted);
+                photoService.deletePhoto(userDeletingPhoto, photoToBeDeleted);
             }catch(FotoSplashExceptions e){
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed", e);
             }
