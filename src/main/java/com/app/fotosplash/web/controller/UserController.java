@@ -29,6 +29,7 @@ public class UserController {
     @GetMapping("/user/profile")
     @PreAuthorize("hasRole('USER')")
     public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) throws UserNotFoundException {
+        log.info("user principal -> {}", userPrincipal);
         return userRepository.findById(userPrincipal.getId())
                 .orElseThrow(() -> new UserNotFoundException("user npt found"));
     }
