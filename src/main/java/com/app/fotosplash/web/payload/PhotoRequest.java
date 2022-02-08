@@ -1,12 +1,16 @@
 package com.app.fotosplash.web.payload;
 
+import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.validation.constraints.NotEmpty;
+
 @Data
 public class PhotoRequest {
-    @NonNull
+    @NotEmpty
     private String photoLabel;
-    @NonNull
+
+    @NotEmpty
     private String image;
 }

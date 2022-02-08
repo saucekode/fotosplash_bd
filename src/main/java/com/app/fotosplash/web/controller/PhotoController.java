@@ -8,21 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/v1/photo")
+@RequestMapping("api/v1/photo/")
 public class PhotoController {
+
     @Autowired
     PhotoService photoService;
 
-    @PostMapping("/addphoto/{userAddingPhoto}")
+    @PostMapping("addphoto/{userAddingPhoto}")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> addPhoto(@RequestParam("userAddingPhoto") String userAddingPhoto, @RequestBody PhotoRequest photoRequest){
+    public ResponseEntity<?> addPhoto(@PathVariable("userAddingPhoto") String userAddingPhoto, @RequestBody PhotoRequest photoRequest){
         try {
             photoService.addPhoto(userAddingPhoto, photoRequest);
         } catch (UserNotFoundException ex) {
@@ -32,7 +34,7 @@ public class PhotoController {
         return ResponseEntity.ok("Photo added successfully");
     }
 
-    @GetMapping("/viewphotos")
+    @GetMapping("viewphotos")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Map<String, Object>> viewPhotos(
@@ -47,12 +49,12 @@ public class PhotoController {
         }
     }
 
-    @DeleteMapping("/deletephoto/{userDeletingPhoto}/{photoToBeDeleted}")
+    @DeleteMapping("deletephoto/{userDeletingPhoto}/{photoToBeDeleted}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> deletePhoto(
-            @RequestParam("userDeletingPhoto") String userDeletingPhoto,
-            @RequestParam("photoToBeDeleted") String photoToBeDeleted
+            @PathVariable("userDeletingPhoto") String userDeletingPhoto,
+            @PathVariable("photoToBeDeleted") String photoToBeDeleted
     ){
 
         try {
