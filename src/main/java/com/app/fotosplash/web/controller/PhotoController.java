@@ -41,7 +41,7 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Map<String, Object>> viewPhotos(
             @RequestParam(required = false) String label,
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "7") int size){
         try{
             return ResponseEntity.ok(photoService.viewAllPhotos(label, page, size));

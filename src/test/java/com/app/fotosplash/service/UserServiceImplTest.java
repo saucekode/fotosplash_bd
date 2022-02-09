@@ -55,8 +55,13 @@ class UserServiceImplTest {
     @DisplayName("User can delete photo and it deletes from user object and photo repository")
     void userCanDeletePhoto() throws FotoSplashExceptions {
 //        Optional<User> existingUser = userRepository.findById("6182c54448bdec1a26d02158");
-        userService.deletePhoto("62015a21109b1320caa83a5e", "6202fef5f060ca5b2e72d5bb");
+        userService.deletePhoto("62015a21109b1320caa83a5e", "620351f8c85db656cc920c11");
 
-        assertThat(userRepository.findById("62015a21109b1320caa83a5e").get().getUserPhotos().size()).isEqualTo(1);
+        assertThat(userRepository.findById("62015a21109b1320caa83a5e").get().getUserPhotos().size()).isEqualTo(2);
+    }
+
+    @Test
+    void viewPhotos_paginated(){
+        userService.viewAllPhotos(null, 0, 1);
     }
 }

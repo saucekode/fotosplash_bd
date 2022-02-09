@@ -59,13 +59,14 @@ public class PhotoServiceImpl implements PhotoService{
 
     @Override
     public Map<String, Object> viewAllPhotos(String photoLabel, int page, int size) {
-        List<Photo> allPhotos = new ArrayList<>();
+        List<Photo> allPhotos = null;
         Pageable paging = PageRequest.of(page, size);
 
         Page<Photo> pagePhotos;
 
         if(photoLabel == null){
             pagePhotos = photoRepository.findAll(paging);
+            log.info("all photos -> {}", pagePhotos.getContent());
         }else{
             pagePhotos = photoRepository.findByPhotoLabelContainingIgnoreCase(photoLabel, paging);
         }
