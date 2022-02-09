@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -27,8 +28,10 @@ public class PhotoController {
     public ResponseEntity<?> addPhoto(@PathVariable("userAddingPhoto") String userAddingPhoto, @RequestBody PhotoRequest photoRequest){
         try {
             photoService.addPhoto(userAddingPhoto, photoRequest);
-        } catch (UserNotFoundException ex) {
+        } catch (FotoSplashExceptions ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist", ex);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return ResponseEntity.ok("Photo added successfully");
@@ -36,12 +39,10 @@ public class PhotoController {
 
     @GetMapping("viewphotos")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Map<String, Object>> viewPhotos(
             @RequestParam(required = false) String label,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "7") int size){
-
         try{
             return ResponseEntity.ok(photoService.viewAllPhotos(label, page, size));
         }catch(Exception ex){

@@ -5,10 +5,11 @@ import com.app.fotosplash.web.exceptions.FotoSplashExceptions;
 import com.app.fotosplash.web.exceptions.UserNotFoundException;
 import com.app.fotosplash.web.payload.PhotoRequest;
 
+import java.io.IOException;
 import java.util.Map;
 
 public interface PhotoService {
-    User addPhoto(String userAddingPhoto, PhotoRequest photoRequest) throws UserNotFoundException;
+    User addPhoto(String userAddingPhoto, PhotoRequest photoRequest) throws FotoSplashExceptions, IOException;
 
     Map<String, Object> viewAllPhotos(String photoLabel, int page, int size);
 
