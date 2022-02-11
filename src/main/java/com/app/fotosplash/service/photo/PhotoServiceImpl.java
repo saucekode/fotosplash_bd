@@ -4,6 +4,7 @@ import com.app.fotosplash.data.model.Photo;
 import com.app.fotosplash.data.model.User;
 import com.app.fotosplash.data.repository.PhotoRepository;
 import com.app.fotosplash.data.repository.UserRepository;
+import com.app.fotosplash.web.exceptions.BadRequestException;
 import com.app.fotosplash.web.exceptions.FotoSplashExceptions;
 import com.app.fotosplash.web.exceptions.UserNotFoundException;
 import com.app.fotosplash.web.payload.PhotoRequest;
@@ -69,6 +70,9 @@ public class PhotoServiceImpl implements PhotoService{
             log.info("all photos -> {}", pagePhotos.getContent());
         }else{
             pagePhotos = photoRepository.findByPhotoLabelContainingIgnoreCase(photoLabel, paging);
+            if(pagePhotos.isEmpty()){
+                log.info("it does not exist");
+            }
         }
 
         allPhotos = pagePhotos.getContent();
@@ -114,14 +118,11 @@ public class PhotoServiceImpl implements PhotoService{
         }
 
         if(!urlHasCorrectImageExtensions(photoRequest.getImage())){
-            throw new FotoSplashExceptions("Url does not belong to an image!");
+            throw new BadRequestException("A real comrade I stan, abeg, image url, God bless! \uD83D\uDE0C");
         }
 
-        try{
-            urlIsAnImage_Not_A_Random_Text(photoRequest.getImage());
-        }catch(MalformedURLException e){
-             throw new MalformedURLException("I sight you, comrade, ejo, image url not plain text \uD83E\uDD2A");
-        }
+        urlIsAnImage_Not_A_Random_Text(photoRequest.getImage());
+
     }
 
     private static boolean urlHasCorrectImageExtensions(String imageUrl){

@@ -1,6 +1,7 @@
 package com.app.fotosplash.web.controller;
 
 import com.app.fotosplash.service.photo.PhotoService;
+import com.app.fotosplash.web.exceptions.BadRequestException;
 import com.app.fotosplash.web.exceptions.FotoSplashExceptions;
 import com.app.fotosplash.web.exceptions.UserNotFoundException;
 import com.app.fotosplash.web.payload.PhotoRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Map;
 
 @RestController
@@ -30,8 +32,11 @@ public class PhotoController {
             photoService.addPhoto(userAddingPhoto, photoRequest);
         } catch (FotoSplashExceptions ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist", ex);
-        } catch (IOException e) {
-            e.printStackTrace();
+        }catch(BadRequestException ex){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, ex.getLocalizedMessage());
+        }
+        catch(IOException e){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "I sight you, comrade, ejo, original image \uD83E\uDD2A", e);
         }
 
         return ResponseEntity.ok("Photo added successfully");

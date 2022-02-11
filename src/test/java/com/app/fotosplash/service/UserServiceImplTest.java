@@ -42,7 +42,9 @@ class UserServiceImplTest {
     @Test
     @DisplayName("User can add photo and it saves to user object and photo repository")
     void userCanAddPhoto() throws FotoSplashExceptions, IOException {
-        PhotoRequest photoDTO = new PhotoRequest("cute passaporte", "jkwk.jpg");
+        PhotoRequest photoDTO = new PhotoRequest();
+        photoDTO.setPhotoLabel("cute");
+        photoDTO.setImage("jkwk.jpg");
         User userAddingPhoto = userService.addPhoto("62015a21109b1320caa83a5e", photoDTO);
 //        log.info(userAddingPhoto.);
         assertThat(userAddingPhoto.getUserPhotos()).isNotNull();
